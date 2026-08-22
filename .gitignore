@@ -1,0 +1,22 @@
+# Variáveis de ambiente (API keys, tokens — NUNCA commitar)
+.env
+.env.local
+.env.*
+
+# Outputs de renderização (binários pesados)
+*.png
+*.jpg
+*.jpeg
+
+# Arquivos de dados brutos do cliente (CSVs, planilhas, etc) — a análise/saída vai versionada,
+# o dado bruto fica de fora por padrão (pode ser sensível e é pesado)
+dados/*.csv
+dados/*.xlsx
+dados/*.xls
+dados/*.pdf
+!dados/README.md
+
+# Sistema
+.DS_Store
+Thumbs.db
+node_modules/
