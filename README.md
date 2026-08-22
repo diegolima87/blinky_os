@@ -22,9 +22,9 @@ Cada instalação vive no seu próprio repositório — não se edita este repo 
 2. Abra o Claude Code nessa pasta.
 3. Cole isso no chat:
 
-   > Clona o repositório https://github.com/diegolima87/blinky_os nesta pasta (`git clone https://github.com/diegolima87/blinky_os.git .`). Depois de clonar, leia `CLAUDE.md` e a skill em `.claude/skills/instalar/SKILL.md`, e conduza comigo a entrevista de instalação do Blinky OS seguindo essas instruções, uma pergunta por vez.
+   > Clona o repositório https://github.com/diegolima87/blinky_os nesta pasta (`git clone https://github.com/diegolima87/blinky_os.git .`), depois apaga a pasta `.git` e roda `git init` de novo, pra esta instalação ficar independente, sem nenhuma conexão com o repositório original. Depois disso, leia `CLAUDE.md` e a skill em `.claude/skills/instalar/SKILL.md`, e conduza comigo a entrevista de instalação do Blinky OS seguindo essas instruções, uma pergunta por vez.
 
-O Claude clona o kit e já começa a instalação na mesma conversa — não precisa saber nenhum comando de antemão.
+O Claude clona o kit, desconecta do repositório original e já começa a instalação na mesma conversa — não precisa saber nenhum comando de antemão. O passo de apagar o `.git` é importante: sem ele, essa pasta continuaria "conectada" ao repositório do kit, e um `/syncar` mais adiante tentaria enviar as mudanças pra lá em vez de criar o repositório próprio da empresa.
 
 ### Tem conta no GitHub
 
