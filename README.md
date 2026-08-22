@@ -14,19 +14,29 @@ Cada empresa cliente ganha seu próprio repositório, clonado a partir deste kit
 
 ## Como obter sua cópia
 
-Cada instalação vive no seu próprio repositório — não se edita este repo diretamente.
+Cada instalação vive no seu próprio repositório — não se edita este repo diretamente. Três jeitos de começar, do mais simples ao mais manual.
 
-**Tem conta no GitHub:** clique em **"Use this template"** no topo desta página. Isso cria uma cópia própria, no seu GitHub, pronta pra clonar.
+### Mais simples — colar um prompt no Claude Code
 
-**Sem prática com git:** abra um terminal e rode:
+1. Crie uma pasta vazia no computador e abra ela no VS Code.
+2. Abra o Claude Code nessa pasta.
+3. Cole isso no chat:
+
+   > Clona o repositório https://github.com/diegolima87/blinky_os nesta pasta (`git clone https://github.com/diegolima87/blinky_os.git .`). Depois de clonar, leia `CLAUDE.md` e a skill em `.claude/skills/instalar/SKILL.md`, e conduza comigo a entrevista de instalação do Blinky OS seguindo essas instruções, uma pergunta por vez.
+
+O Claude clona o kit e já começa a instalação na mesma conversa — não precisa saber nenhum comando de antemão.
+
+### Tem conta no GitHub
+
+Clique em **"Use this template"** no topo desta página. Isso cria uma cópia própria, no seu GitHub, pronta pra clonar. Depois, abra a pasta clonada no Claude Code e rode `/instalar`.
+
+### Prefere terminal
 
 ```bash
 npx giget gh:diegolima87/blinky_os meu-blinky-os
 ```
 
-Isso baixa só os arquivos do kit (sem histórico de git) numa pasta `meu-blinky-os/`, pronta pra abrir no Claude Code.
-
-Depois, os dois caminhos convergem: abra a pasta no Claude Code e rode `/instalar`.
+Isso baixa só os arquivos do kit (sem histórico de git) numa pasta `meu-blinky-os/`, pronta pra abrir no Claude Code e rodar `/instalar`.
 
 ## Primeiros passos numa empresa nova
 
