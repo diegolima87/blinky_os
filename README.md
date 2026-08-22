@@ -12,9 +12,25 @@ Cada empresa cliente ganha seu próprio repositório, clonado a partir deste kit
 - **`templates/`** — modelos de skill, catálogo de ferramentas/MCPs e perfis de onboarding usados pelo `/instalar`.
 - **`CLAUDE.md`** — a "constituição": as regras de como o Claude se comporta nesse workspace (checar skill antes de agir freehand, pedir permissão antes de criar skill nova ou gravar em memória, tratar tudo como confidencial).
 
+## Como obter sua cópia
+
+Cada instalação vive no seu próprio repositório — não se edita este repo diretamente.
+
+**Tem conta no GitHub:** clique em **"Use this template"** no topo desta página. Isso cria uma cópia própria, no seu GitHub, pronta pra clonar.
+
+**Sem prática com git:** abra um terminal e rode:
+
+```bash
+npx giget gh:diegolima87/blinky_os meu-blinky-os
+```
+
+Isso baixa só os arquivos do kit (sem histórico de git) numa pasta `meu-blinky-os/`, pronta pra abrir no Claude Code.
+
+Depois, os dois caminhos convergem: abra a pasta no Claude Code e rode `/instalar`.
+
 ## Primeiros passos numa empresa nova
 
-1. Clone este kit num repositório novo, dedicado à empresa cliente.
+1. Clone este kit (ou use um dos caminhos acima) num repositório novo, dedicado à empresa cliente.
 2. Rode `/instalar` — entrevista de onboarding que detecta o formato organizacional do cliente e gera `CLAUDE.md`, `_memoria/` e a estrutura de pastas certas.
 3. Rode `/mapear` — entrevista que descobre os processos repetitivos do time e transforma cada um numa skill nova (sempre com confirmação antes de criar qualquer arquivo).
 4. Rode `/syncar` pra conectar o repo ao GitHub do cliente (isso é o backup e o handoff).
