@@ -55,3 +55,11 @@ Isso baixa só os arquivos do kit (sem histórico de git) numa pasta `meu-blinky
 ## Escopo do v1
 
 Só Claude Code (sem ponte pra Codex/outras ferramentas) e sem pipelines multi-agente — o framework é memória + skills. Squads multi-agente ficam pra uma versão futura, com checkpoints implementados como permissões reais, não só instrução em texto.
+
+## Oportunidades estratégicas (fora do escopo atual)
+
+Fica registrado aqui pra não se perder — candidatos a versão futura, não implementados agora:
+
+- **Pesquisa de satisfação/persona via WhatsApp com IA** — motor próprio já maduro e usado por clientes reais, orquestrando conversa, transcrição e análise automática de resultado. Candidato a virar uma skill de integração no espírito de como as skills `*-ratos` de ads orquestram Meta/Google Ads, mas pra NPS/pesquisa.
+- **Geração gráfica em lote pra redes de franquia** — peças com campos dinâmicos posicionados por template (nome, cidade, QR code) a partir de uma planilha, pra gerar dezenas de variações de uma vez. Ainda em MVP, sem API pública — revisitar quando a ferramenta amadurecer.
+- **Automação de funil comercial via WhatsApp** — scoring de lead, cadências automáticas por faixa de perfil, chat pago via assinatura. Referência de arquitetura pra uma futura skill de vendas, além do que `proposta`/`followup` já cobrem.

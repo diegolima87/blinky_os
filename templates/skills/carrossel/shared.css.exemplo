@@ -1,0 +1,410 @@
+/* ==========================================================================
+   Sistema de design de carrosséis — modelo genérico
+   1080x1350 (feed Instagram/Facebook 4:5), renderizado por Playwright.
+
+   Copiar este arquivo como `shared.css` de verdade dentro da pasta de saída
+   do carrossel (ex.: conteudo/carrosseis/[tema]/instagram/shared.css) e
+   trocar os valores de --cor-principal/--cor-destaque/--cor-fundo pelas
+   cores reais de marca/design-guide.md antes de usar.
+
+   Duas regras que sustentam o resto:
+   1. O chassi (well, barra de progresso, logo) nunca sai do lugar, então os
+      slides leem como um objeto só.
+   2. Nunca dois slides seguidos com o mesmo fundo.
+   ========================================================================== */
+
+:root {
+  /* Trocar pelas cores reais de marca/design-guide.md */
+  --cor-principal: #0d4b63;       /* cor de fundo escuro / cor de texto sobre fundo claro */
+  --cor-principal-escura: #083445;
+  --cor-principal-clara: #25657e;
+  --cor-destaque: #e6b319;        /* accent — usado em <em>, barra de progresso, ícones */
+  --cor-clara: #faf8f5;           /* "branco" da marca, usado sobre fundo escuro */
+
+  --texto-sobre-claro: var(--cor-principal);
+  --texto-sobre-claro-suave: #40687b;
+  --texto-sobre-escuro-suave: rgba(250, 248, 245, 0.78);
+
+  /* chassi — geralmente não precisa mexer */
+  --pad: 72px;
+  --well-bottom: 210px;
+  --bar-bottom: 150px;
+  --foot-bottom: 64px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html,
+body {
+  width: 1080px;
+  height: 1350px;
+}
+
+body {
+  position: relative;
+  overflow: hidden;
+  font-family: "Inter", sans-serif; /* trocar pela fonte de marca/design-guide.md */
+  background: var(--cor-principal);
+}
+
+/* Destaque semântico: o texto marca a palavra-chave com <em>, o sistema
+   decide como ela aparece. Nunca itálico. */
+em {
+  font-style: normal;
+  font-weight: 800;
+  color: var(--cor-destaque);
+}
+
+/* --------------------------------------------------------------------------
+   Chassi fixo
+   -------------------------------------------------------------------------- */
+
+/* Margem simétrica em cima e embaixo, pra que justify-content:center caia
+   no centro óptico real do slide, não no centro do espaço útil acima do
+   rodapé. */
+.well {
+  position: absolute;
+  left: var(--pad);
+  right: var(--pad);
+  top: var(--well-bottom);
+  bottom: var(--well-bottom);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 3;
+}
+
+/* capa e slides com foto ancoram o texto embaixo, sobre a parte densa do
+   degradê (ver .layer--scrim) */
+.well--bottom {
+  top: 0;
+  justify-content: flex-end;
+}
+
+.bar {
+  position: absolute;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: var(--bar-bottom);
+  height: 3px;
+  border-radius: 2px;
+  z-index: 3;
+}
+
+.bar__fill {
+  height: 100%;
+  border-radius: 2px;
+}
+
+.logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: var(--foot-bottom);
+  height: 56px;
+  z-index: 3;
+}
+
+/* --------------------------------------------------------------------------
+   Fundos e camadas de profundidade
+   Empilháveis: cada camada é uma div própria, nunca pseudo-elemento
+   concorrente no mesmo nó.
+   -------------------------------------------------------------------------- */
+
+.layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* foto sangrando a página inteira */
+.photo-bleed {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* Degradê de cinco paradas: queda longa e não-linear na cor exata do fundo,
+   pra foto dissolver no slide em vez de ficar dentro de uma caixa.
+   Trocar o rgb() pela versão em rgb (não hex) de --cor-principal-escura. */
+.layer--scrim {
+  background: linear-gradient(
+    to top,
+    rgba(8, 52, 69, 0.96) 0%,
+    rgba(8, 52, 69, 0.88) 22%,
+    rgba(8, 52, 69, 0.45) 46%,
+    rgba(8, 52, 69, 0.08) 66%,
+    rgba(8, 52, 69, 0) 82%
+  );
+}
+
+/* grão sutil: tira o aspecto "digital flat" dos fundos chapados */
+.layer--grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+}
+
+/* padrão de pontos */
+.layer--dots {
+  background-image: radial-gradient(circle at 1px 1px, var(--cor-clara) 1px, transparent 0);
+  background-size: 40px 40px;
+  opacity: 0.05;
+}
+
+/* brilho radial quente atrás do conteúdo */
+.layer--glow {
+  background: radial-gradient(circle at 22% 32%, rgba(230, 179, 25, 0.16) 0%, rgba(230, 179, 25, 0) 58%);
+}
+
+.layer--glow-secundario {
+  background: radial-gradient(circle at 78% 76%, rgba(37, 101, 126, 0.55) 0%, rgba(37, 101, 126, 0) 60%);
+}
+
+/* --------------------------------------------------------------------------
+   Escala tipográfica (contraste por peso, não por família de fonte)
+   -------------------------------------------------------------------------- */
+
+.eyebrow {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cor-destaque);
+}
+
+.title-cover {
+  font-weight: 800;
+  font-size: 66px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.title-section {
+  font-weight: 800;
+  font-size: 56px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.stat {
+  font-weight: 800;
+  font-size: 104px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.body {
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1.55;
+  max-width: 860px;
+}
+
+.list-item-text {
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 1.35;
+}
+
+/* --------------------------------------------------------------------------
+   Cor do texto por tipo de fundo
+   -------------------------------------------------------------------------- */
+
+.on-dark .title-cover,
+.on-dark .title-section,
+.on-dark .stat,
+.on-dark .list-item-text {
+  color: var(--cor-clara);
+}
+.on-dark .body {
+  color: var(--texto-sobre-escuro-suave);
+}
+.on-dark .bar {
+  background: rgba(250, 248, 245, 0.2);
+}
+.on-dark .bar__fill {
+  background: var(--cor-destaque);
+}
+.on-dark .logo {
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.35));
+}
+
+.on-light .title-cover,
+.on-light .title-section,
+.on-light .stat,
+.on-light .list-item-text {
+  color: var(--texto-sobre-claro);
+}
+.on-light .body {
+  color: var(--texto-sobre-claro-suave);
+}
+.on-light .bar {
+  background: rgba(13, 75, 99, 0.15);
+}
+.on-light .bar__fill {
+  background: var(--cor-destaque);
+}
+
+/* texto sobre foto precisa de sombra mínima pra sobreviver à variação da imagem */
+.on-photo .eyebrow {
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
+}
+
+/* --------------------------------------------------------------------------
+   Ícones (lucide, traço herda a cor do container via currentColor — ver icones.md)
+   -------------------------------------------------------------------------- */
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.icon-badge {
+  min-width: 88px;
+  width: 88px;
+  height: 88px;
+  border-radius: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cor-destaque);
+  background: rgba(230, 179, 25, 0.12);
+  border: 1px solid rgba(230, 179, 25, 0.3);
+}
+
+.icon-badge svg {
+  width: 43px;
+  height: 43px;
+}
+
+.on-light .icon-badge {
+  background: rgba(13, 75, 99, 0.06);
+  border-color: rgba(230, 179, 25, 0.5);
+}
+
+.icon-inline {
+  display: inline-flex;
+  width: 34px;
+  height: 34px;
+  color: var(--cor-destaque);
+  vertical-align: -6px;
+}
+
+/* --------------------------------------------------------------------------
+   Componentes
+   -------------------------------------------------------------------------- */
+
+.gold-rule {
+  width: 84px;
+  height: 6px;
+  background: var(--cor-destaque);
+  border-radius: 999px;
+}
+
+.icon-list {
+  display: flex;
+  flex-direction: column;
+  gap: 58px;
+}
+
+.icon-list-item {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+/* grade de números/KPIs em destaque (ex.: "10 anos de mercado", "500+ clientes") */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 30px 30px;
+  border-radius: 22px;
+  background: rgba(250, 248, 245, 0.07);
+  border: 1px solid rgba(250, 248, 245, 0.16);
+}
+
+.stat-card .icon-badge {
+  min-width: 66px;
+  width: 66px;
+  height: 66px;
+  border-radius: 18px;
+}
+
+.stat-card .icon-badge svg {
+  width: 32px;
+  height: 32px;
+}
+
+.stat-label {
+  font-size: 23px;
+  font-weight: 500;
+  color: var(--texto-sobre-escuro-suave);
+  letter-spacing: 0.01em;
+}
+
+.stat-value {
+  font-size: 37px;
+  font-weight: 700;
+  color: var(--cor-clara);
+  letter-spacing: -0.01em;
+}
+
+.stat-value span {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--texto-sobre-escuro-suave);
+}
+
+/* pílulas de vidro */
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 22px 34px;
+  border-radius: 999px;
+  font-size: 29px;
+  font-weight: 600;
+}
+
+.on-dark .pill {
+  background: rgba(250, 248, 245, 0.1);
+  border: 1px solid rgba(250, 248, 245, 0.22);
+  backdrop-filter: blur(12px);
+  color: var(--cor-clara);
+}
+
+.on-light .pill {
+  background: rgba(13, 75, 99, 0.06);
+  border: 1px solid rgba(13, 75, 99, 0.14);
+  color: var(--texto-sobre-claro);
+}
+
+.pill .icon {
+  width: 26px;
+  height: 26px;
+  color: var(--cor-destaque);
+}

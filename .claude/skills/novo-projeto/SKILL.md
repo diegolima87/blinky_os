@@ -53,6 +53,12 @@ Apresentar a sugestão e aguardar confirmação:
 
 > "Sugiro criar em `marketing/`. Faz sentido ou prefere outro lugar?"
 
+**Quando são muitas unidades homogêneas fazendo a mesma coisa** (franquia, rede, múltiplas contas de mídia social administradas centralmente pela empresa cliente): considerar **tabela markdown centralizada** em vez de pasta por unidade — uma pasta tipo `franqueados/cadastro.md` (uma linha por unidade: nome, cidade, IDs relevantes) + `agendamentos/registro.md` (log append-only), em vez de `unidades/<nome>/` pra cada uma. Esse padrão é referenciado pela implementação multi-unidade do template `agendar-publicacao` e pelo `relatorio-status` quando o relatório cobre várias unidades de uma vez.
+
+**Quando cada cliente tem contexto/marca própria e são poucos:** usar pasta por cliente (`clientes/<nome>/design-guide.md` isolado) — já é o padrão do perfil `agencia-ou-prestador-servicos`.
+
+Se a resposta não for óbvia (não é claramente "muitas unidades iguais" nem "poucos clientes distintos"), perguntar ao usuário qual dos dois padrões faz mais sentido antes de criar a estrutura.
+
 ### Passo 3: Criar a pasta e o `CLAUDE.md` do sub-contexto
 
 Cada sub-contexto ganha seu próprio `CLAUDE.md` dedicado dentro da pasta:

@@ -1,0 +1,38 @@
+<!--
+Isto é um MODELO de como escrever um arquivo de estilo fotográfico, não
+conteúdo pronto. Se a empresa cliente gera imagens com pessoas com
+regularidade e tem um padrão visual a manter (idade, tom, o que evitar),
+criar `references/estilo-fotografico.md` de verdade junto com o cliente,
+seguindo esta estrutura. Senão, a skill `gerar-imagem` segue só as regras
+gerais (sem texto embutido, sem marca d'água, prompt em inglês) sem precisar
+desse arquivo.
+-->
+
+# Estilo fotográfico padrão — [Nome da Empresa]
+
+Usado sempre que a imagem gerada envolver pessoas relacionadas ao negócio (ex.: cliente sendo atendido, profissional em ação, equipe). Adaptar conforme o ciclo de geração for revelando o que funciona e o que não funciona — este arquivo deve crescer com o uso, não ficar estático.
+
+## Descrição (escrever em inglês no prompt, resultado mais consistente)
+
+[Descrição de 2-4 frases: tipo de fotografia (documental realista, editorial, etc.), ambientação, tom de luz, e o clima geral que a marca quer transmitir.]
+
+## Quando NÃO aplicar
+
+- Imagem gráfica/abstrata pra ad, banner ou capa — usar o estilo pedido pelo usuário, sem forçar esta linha por cima
+- Foto de produto ou ambiente sem pessoas — aproveitar só a parte de iluminação/tom, sem a parte de pessoas
+- Se o usuário descrever um estilo diferente explicitamente, o pedido dele vale mais que este padrão
+
+## Regra que mais importa (preencher com o que o uso real for revelando)
+
+[Depois de gerar algumas dezenas de imagens, um padrão de erro específico costuma aparecer — por exemplo, cena com duas pessoas do mesmo quadro confundindo papéis, ou um detalhe da marca que o modelo sempre erra. Documentar aqui a regra que evita esse erro específico, com exemplos do que já deu errado. Isso é o que mais economiza tentativa e erro ao longo do tempo.]
+
+## Conferir antes de aceitar
+
+Lista curta (3-5 pontos) do que checar em toda foto gerada antes de aprovar — ex.: número e papel das pessoas bate com o pedido, nenhum texto inventado em ponto focal, mãos/detalhes anatômicos corretos.
+
+## Regras gerais pra qualquer prompt (com ou sem pessoas)
+
+- Sempre fechar o prompt com "no text, no captions, no watermark, no logo" — os modelos erram texto embutido quase sempre
+- Escrever o prompt em inglês, mesmo que o pedido tenha vindo em português
+- Prompt negativo curto — longo demais pode fazer a API devolver imagem ruim
+- Teto de duas tentativas por imagem quando a ferramenta for paga. Passou disso, o problema costuma ser a cena pedida, não o prompt — trocar de cena rende mais que reescrever a mesma
