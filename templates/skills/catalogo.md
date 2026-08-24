@@ -86,6 +86,17 @@ Nativa do Claude Code. Útil quando a empresa cliente tem produto digital própr
 
 ---
 
+## Controlar um navegador de verdade (alto risco — avaliar caso a caso)
+
+### Browser Harness
+**O que faz:** Controla o Chrome de verdade via CDP (Chrome DevTools Protocol) — clica, digita, navega, extrai dado, tira screenshot, grava vídeo. Roda local (precisa do Chrome com debug remoto habilitado) ou na nuvem (Browser Use Cloud, serviço pago, cobra enquanto o navegador remoto fica ligado). Vem com mais de 90 "domain skills" prontas pra sites específicos (Amazon, LinkedIn, Gmail, Shopify, bancos de dados públicos, etc — desligadas por padrão, `BH_DOMAIN_SKILLS=1` pra ativar).
+**Bom pra:** Automatizar um site sem API pública, testar um fluxo que só existe via navegador, extrair dado de página que exige login ou passa por proteção anti-bot.
+**Como instalar:** `git clone https://github.com/browser-use/browser-harness ~/.claude/skills/browser-harness` (setup completo em `install.md` do repositório — requer Python e Chrome configurado).
+**Aviso de segurança (ler antes de instalar):** essa ferramenta age como a pessoa logada naquele navegador — email, banco, CRM, redes sociais, o que estiver aberto na sessão. É uma categoria de risco diferente de uma integração de API (que tem escopo limitado e auditável); aqui é controle do navegador inteiro. **Nunca** instalar ou sugerir por padrão, nunca usar em conta de produção/financeira do cliente sem autorização explícita e escopo bem definido pra aquela tarefa específica. Diferente do `/webapp-testing` nativo (que testa o app do próprio cliente, sem tocar em conta logada de terceiros).
+**Fonte:** Terceiros (browser-use)
+
+---
+
 ## Como adicionar skills novas a este catálogo
 
 Se uma skill nova foi testada e vale a pena guardar como referência pra outros clientes:
