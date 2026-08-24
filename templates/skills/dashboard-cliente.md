@@ -64,6 +64,7 @@ Criar `scripts/gerar-dashboard-[metrica].{py,js}`:
 - Lê **só** o snapshot salvo, nunca a fonte original
 - Monta o HTML final com o payload dos dados embutido inline (não faz fetch em tempo de visualização)
 - Usa `marca/design-guide.md` como referência de identidade
+- Pra hierarquia visual e leitura rápida de KPI (não pra cor/fonte), pode consultar `templates/design/referencias/README.md` — `linear.md` é a referência mais indicada pra painel com muita métrica na tela
 - Salva em `dashboards/[metrica]-dashboard.html`
 
 ## Passo 5 — Agendamento

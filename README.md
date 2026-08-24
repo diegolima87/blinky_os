@@ -162,6 +162,7 @@ templates/
   perfis/                      # estrutura de pastas por tipo de organização
   skills/                      # modelos de skill sob demanda (ver acima)
   ferramentas/catalogo.md      # APIs, CLIs e MCPs conhecidos, prontos pra plugar
+  design/referencias/          # sistemas de design de referência pra elevar o acabamento visual
 dados/                         # arquivos de apoio (imagens, planilhas, prints de marca)
 ```
 

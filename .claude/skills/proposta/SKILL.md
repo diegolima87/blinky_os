@@ -38,6 +38,7 @@ Se o usuário já forneceu as informações de forma livre, extrair o que der e 
 - Ler `marca/design-guide.md` pra aplicar cores e fontes
 - Ler `_memoria/empresa.md` pra dados de quem propõe (nome, serviços, contato)
 - Ler `_memoria/preferencias.md` pra tom da proposta
+- Se `marca/design-guide.md` estiver vazio, ou se quiser elevar o acabamento visual (espaçamento, hierarquia, escala tipográfica) além do básico, consultar `templates/design/referencias/README.md` — usar só como referência de estrutura, nunca substituir a cor/fonte real do cliente por uma daquele arquivo
 
 ### Passo 3 — Gerar o HTML
 

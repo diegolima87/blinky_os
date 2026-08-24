@@ -11,6 +11,7 @@
 [lista das pastas criadas e o que vai em cada uma — gerada conforme o perfil detectado pelo `/instalar`]
 - `templates/skills/` — modelos de skill prontos pra personalizar com `/mapear`
 - `templates/ferramentas/catalogo.md` — APIs, CLIs e MCPs disponíveis pra usar em skills
+- `templates/design/referencias/` — sistemas de design de referência (espaçamento, hierarquia, tipografia) pra elevar o acabamento visual de qualquer entregável, sempre com a cor/fonte real do cliente por cima
 
 ## Sobre a empresa
 

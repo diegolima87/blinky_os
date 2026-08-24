@@ -84,7 +84,7 @@ Apresentar as opções em conversa, não como lista formal:
 
 **Se ainda não tiver definido:**
 - Deixar `marca/design-guide.md` com campos em branco e orientação de como preencher depois
-- Mencionar: "Sem problema — preenche quando tiver. Até lá, uso um visual neutro."
+- Mencionar: "Sem problema — preenche quando tiver. Até lá, uso um visual neutro de boa qualidade (baseado em `templates/design/referencias/notion.md`), e troco pra identidade de vocês assim que definirem."
 
 ### Pergunta 8 — Tom de voz
 "Como o time prefere que o Claude escreva? O que mais incomoda em textos gerados por IA?"

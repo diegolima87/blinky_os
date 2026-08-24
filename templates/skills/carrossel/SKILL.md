@@ -38,6 +38,8 @@ Ler `marca/design-guide.md`. Se os campos estiverem vazios:
 
 Com as respostas, preencher `marca/design-guide.md`. A partir da cor principal, gerar uma variação clara e uma escura pra usar nos slides. Se o usuário disser "não sei" ou "escolhe pra mim", usar um padrão limpo (fundo escuro, um tom de destaque, tipografia sans-serif bem contrastada).
 
+Pra elevar o acabamento (espaçamento, hierarquia, escala de tamanho) além do básico, consultar `templates/design/referencias/README.md` — tem uma referência pra cada estilo geral (clean, bold, editorial). Usar só a lógica estrutural de lá; cor, fonte e logo continuam vindo de `marca/design-guide.md`.
+
 ### 2. Tom de voz
 
 Ler `_memoria/preferencias.md`. Se estiver vazio, perguntar como a empresa prefere que o texto dos slides seja escrito, e o que incomoda em texto de IA.
