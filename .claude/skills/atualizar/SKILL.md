@@ -3,7 +3,8 @@ name: atualizar
 description: >
   Varre o estado atual do workspace e atualiza os arquivos de memória que ficaram
   desatualizados. Compara o que existe nas pastas, skills e configurações com o que
-  está documentado em CLAUDE.md, _memoria/ e marca/design-guide.md.
+  está documentado em CLAUDE.md, _memoria/ e marca/design-guide.md. Não busca nada
+  de fora — pra trazer melhoria nova do kit original, usar /atualizar-kit.
   Use quando o usuário chamar /atualizar, quando disser "atualiza o contexto",
   "os arquivos tão desatualizados", "sincroniza a memória", ou no fim de uma sessão
   longa com muitas mudanças.
@@ -20,7 +21,7 @@ Fazer uma varredura comparando o **estado real do workspace** com o que está **
 Ler e anotar:
 
 1. **Estrutura de pastas** — listar os diretórios de primeiro nível (ignorar `.git`, `node_modules`, `.claude`, `templates`, `dados`)
-2. **Skills instaladas** — listar `.claude/skills/*/` (exceto as skills do kit: instalar, iniciar, syncar, mapear, novo-projeto, atualizar)
+2. **Skills instaladas** — listar `.claude/skills/*/` (exceto as skills fixas do kit: instalar, iniciar, syncar, mapear, novo-projeto, atualizar, atualizar-kit, proposta, ata-reuniao, documentar-processo, relatorio-status, email-profissional)
 3. **MCPs configurados** — verificar se `.claude.json` ou `.claude/mcp.json` existe e quais servers estão listados
 4. **Arquivos recentes** — usar `git diff --name-only HEAD~5..HEAD` (ou menos commits se não tiver 5) pra ver o que mudou recentemente
 5. **Mudanças não commitadas** — `git status` pra ver trabalho em andamento

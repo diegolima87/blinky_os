@@ -17,6 +17,7 @@ Pensado pra ser **instalado dentro de empresas clientes**, como parte de um enga
 - [O problema que isso resolve](#o-problema-que-isso-resolve)
 - [Como funciona](#como-funciona)
 - [Como obter sua cópia](#como-obter-sua-cópia)
+  - [Já instalei antes — como atualizo?](#já-instalei-antes--como-atualizo)
 - [Exemplo real: uma semana com o Blinky OS](#exemplo-real-uma-semana-com-o-blinky-os)
 - [As skills do sistema](#as-skills-do-sistema)
 - [Templates sob demanda](#templates-sob-demanda)
@@ -80,6 +81,16 @@ npx giget gh:diegolima87/blinky_os meu-blinky-os
 
 Isso baixa só os arquivos do kit (sem histórico de git) numa pasta `meu-blinky-os/`, pronta pra abrir no Claude Code e rodar `/instalar`.
 
+### Já instalei antes — como atualizo?
+
+Cada instalação é desconectada de propósito do repositório original (é o que garante que o `/syncar` de um cliente nunca vaze pro GitHub de outro). Isso significa que **puxar atualização não é `git pull`** — é a skill `/atualizar-kit` que faz isso, trazendo só o que é código do kit (skills fixas, `templates/`) e nunca tocando em memória, identidade visual ou skills criadas sob medida pro cliente.
+
+Se a instalação já tem `/atualizar-kit` (toda instalação nova a partir de agora já vem com ela), basta rodar o comando. Se for uma instalação de antes dessa skill existir, um bootstrap único — cole isto no Claude Code dessa pasta:
+
+> Busca o conteúdo de https://raw.githubusercontent.com/diegolima87/blinky_os/main/.claude/skills/atualizar-kit/SKILL.md e salva em `.claude/skills/atualizar-kit/SKILL.md` nesta pasta. Depois leia o arquivo salvo e rode o fluxo dele.
+
+A partir daí, `/atualizar-kit` funciona normalmente nas próximas vezes.
+
 ## Exemplo real: uma semana com o Blinky OS
 
 Pra deixar concreto o que "memória + skills dentro do Claude Code" quer dizer na prática, um exemplo — empresa fictícia, mas o fluxo é exatamente o real.
@@ -112,7 +123,7 @@ Nada disso usou um prompt "esperto" escrito na hora — cada passo é uma skill,
 
 ## As skills do sistema
 
-Onze skills vêm em toda instalação — universais, servem qualquer empresa. Skills especializadas (redes sociais, agendamento, dashboards) não vêm por padrão: ficam em `templates/skills/` e só são instaladas quando o `/mapear` confirma que aquele processo existe de verdade no negócio ([ver por quê](#por-que-nem-toda-skill-vem-instalada)).
+Doze skills vêm em toda instalação — universais, servem qualquer empresa. Skills especializadas (redes sociais, agendamento, dashboards) não vêm por padrão: ficam em `templates/skills/` e só são instaladas quando o `/mapear` confirma que aquele processo existe de verdade no negócio ([ver por quê](#por-que-nem-toda-skill-vem-instalada)).
 
 | Skill | O que faz |
 |---|---|
@@ -120,6 +131,7 @@ Onze skills vêm em toda instalação — universais, servem qualquer empresa. S
 | `/mapear` | Entrevista os processos repetitivos do time e transforma cada um numa skill nova, sempre com confirmação antes de criar |
 | `/iniciar` | Carrega o contexto salvo no começo de cada sessão de trabalho |
 | `/atualizar` | Compara o workspace real com a memória documentada e propõe correções |
+| `/atualizar-kit` | Traz atualização do kit original (skills fixas, templates) — nunca toca em memória ou skill customizada |
 | `/syncar` | Salva o estado atual no GitHub do cliente (commit + push), configura o remote na primeira vez |
 | `/novo-projeto` | Cria uma pasta de departamento, cliente ou projeto novo com `CLAUDE.md` dedicado |
 | `/proposta` | Gera proposta comercial ou interna em HTML, com a identidade visual da empresa |
@@ -155,7 +167,7 @@ _memoria/
   preferencias.md              # tom de voz, o que evitar
   estrategia.md                # foco atual, fase do rollout
   agora.md                     # contexto vivo — onde paramos, pendências
-.claude/skills/                # as 11 skills do base-kit, prontas pra usar
+.claude/skills/                # as 12 skills do base-kit, prontas pra usar
 marca/
   design-guide.md              # cores, fontes, identidade visual
 templates/
