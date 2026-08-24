@@ -44,6 +44,8 @@ Nunca adicionar isso como remote do repositório do cliente — é só uma cópi
 
 ### 2. Comparar
 
+**Importante:** comparar ignorando diferença de quebra de linha (CRLF vs LF) — clone novo no Windows costuma vir com terminador diferente do que já está no repositório do cliente por causa do `core.autocrlf`, mesmo quando o conteúdo é idêntico. Normalizar (ex.: remover `\r`) antes de comparar, senão o diagnóstico do passo 3 vai listar o kit inteiro como "modificado" mesmo sem nenhuma mudança real — confirmado isso na prática rodando a skill uma vez direto no próprio repositório do kit.
+
 Pra cada caminho da lista "Atualiza" acima, comparar o conteúdo da pasta temporária com o que existe no repositório do cliente:
 
 - **Novo** — existe no kit baixado, não existe localmente (skill nova, template novo)
