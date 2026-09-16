@@ -25,16 +25,15 @@ Unidades sem **IG Business Account ID** e **Page ID** preenchidos ficam de fora 
 
 ## Setup (primeira vez)
 
-Um app só cobre todas as unidades. O modelo é: **um App + um System User, ambos dentro do Business Manager da empresa**, com o System User tendo papel de admin atribuído a todas as páginas e contas de Instagram das unidades. Não criar um app por unidade.
+Um app só cobre todas as unidades. O modelo é: **um App + um System User, ambos dentro do Business Portfolio da empresa**, com o System User tendo papel de admin atribuído a todas as páginas e contas de Instagram das unidades. Não criar um app por unidade.
 
-Se `META_SYSTEM_TOKEN` não existir em `.env`, guiar o setup:
+Se `META_SYSTEM_TOKEN` não existir em `.env`, guiar o setup usando `/configurar-app-meta` (se instalada) como base — ela cobre Business Portfolio, criação do app, produtos certos e a decisão Standard x Advanced Access, que são os mesmos passos aqui. A única diferença pra esse caso multi-unidade:
 
-1. **Criar app no Meta Developers:** um app tipo "Empresa" vinculado ao Business Manager, com os produtos "Instagram Graph API" e "Facebook Login for Business" ativados.
-2. **Criar o System User:** em Business Settings > Usuários do sistema, criar um usuário do sistema com papel de Admin, atribuindo acesso admin a todas as páginas/contas de Instagram das unidades.
-3. **Escopos necessários:** `instagram_content_publish`, `instagram_basic`, `pages_read_engagement`, `pages_manage_posts`.
-4. **Checar Advanced Access antes de liberar publicação em massa** — por padrão o Meta libera essas permissões em modo Standard Access, que só funciona de forma estável pra um número pequeno de contas de teste. Publicar de verdade em muitas páginas provavelmente exige **App Review pedindo Advanced Access** nas permissões acima — não é imediato, confirmar status em App Dashboard > App Review antes de tentar publicar em escala. Se ainda estiver em Standard Access, rodar primeiro num grupo pequeno de unidades de teste.
-5. **Converter pra token de longa duração** e salvar em `.env` como `META_SYSTEM_TOKEN`.
-6. **Configurar host de imagens** (ex.: imgbb) — a Graph API precisa de URL pública pra cada imagem.
+1. Em vez de gerar token pessoal (Passos 5-7 do `/configurar-app-meta`), criar um **System User** em Business Settings > Usuários do sistema, com papel de Admin, atribuindo acesso admin a todas as páginas/contas de Instagram das unidades.
+2. **Escopos:** os mesmos — `instagram_content_publish`, `instagram_basic`, `pages_read_engagement`, `pages_manage_posts`.
+3. Publicar em muitas páginas de dono diferente quase sempre exige **Advanced Access** (ver Passo 4 do `/configurar-app-meta`) — confirmar status em App Dashboard > App Review antes de tentar publicar em escala. Se ainda estiver em Standard Access, rodar primeiro num grupo pequeno de unidades de teste.
+4. **Converter pra token de longa duração** e salvar em `.env` como `META_SYSTEM_TOKEN` (em vez de `FACEBOOK_PAGE_ACCESS_TOKEN` — nome diferente porque esse token cobre várias páginas, não uma só).
+5. **Configurar host de imagens** (ex.: imgbb) — a Graph API precisa de URL pública pra cada imagem.
 
 ## Vincular uma unidade nova ao cadastro
 

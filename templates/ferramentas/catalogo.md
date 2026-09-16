@@ -56,16 +56,18 @@ curl -L "https://image.pollinations.ai/prompt/<prompt-url-encoded>?width=1080&he
 
 ## Publicar em redes sociais
 
+> Pra criar o App do Meta e extrair essas credenciais do zero, sem pressupor que o cliente já conhece a interface do Meta, usar o template `configurar-app-meta` — guia passo a passo até chegar exatamente nas variáveis que as duas entradas abaixo esperam.
+
 ### Meta Graph API — publicação simples
 **O que faz:** Publica post/carrossel direto no Instagram/Facebook via token de Page
 **Precisa de conta:** Sim, app no Meta Developers + token de Page (não de usuário — token de usuário comum causa o erro `Unpublished posts must be posted to a page as the page itself`)
-**Configurar:** Salvar `FACEBOOK_PAGE_ACCESS_TOKEN` e `INSTAGRAM_USER_ID` no `.env`
-**Quando usar:** Empresa com uma conta/página só. Base de `carrossel` e `agendar-publicacao` (implementações local e Supabase). O dry-run do Instagram cria containers de verdade na API, só não publica — containers órfãos expiram sozinhos em 24h, sem efeito no perfil.
+**Configurar:** Salvar `FACEBOOK_PAGE_ACCESS_TOKEN` e `INSTAGRAM_USER_ID` no `.env` — usar `configurar-app-meta` pra chegar até aqui
+**Quando usar:** Empresa com uma conta/página só. Base de `carrossel` e `agendar-publicacao` (implementações local e Supabase), e da skill global `publicar-redes` (método Graph API). O dry-run do Instagram cria containers de verdade na API, só não publica — containers órfãos expiram sozinhos em 24h, sem efeito no perfil.
 
 ### Meta Graph API — multi-página (System User)
-**O que faz:** Publica em dezenas ou centenas de páginas Instagram/Facebook administradas pela mesma empresa, com um único token de System User do Business Manager
-**Precisa de conta:** Sim — um App + um System User no Business Manager, com o System User tendo papel de admin atribuído a todas as páginas/contas de Instagram das unidades. Escopos: `instagram_content_publish`, `instagram_basic`, `pages_read_engagement`, `pages_manage_posts`
-**Configurar:** Salvar `META_SYSTEM_TOKEN` no `.env`, mais um host de imagem público (ex.: imgbb) já que a Graph API exige URL, não upload direto
+**O que faz:** Publica em dezenas ou centenas de páginas Instagram/Facebook administradas pela mesma empresa, com um único token de System User do Business Portfolio
+**Precisa de conta:** Sim — um App + um System User no Business Portfolio, com o System User tendo papel de admin atribuído a todas as páginas/contas de Instagram das unidades. Escopos: `instagram_content_publish`, `instagram_basic`, `pages_read_engagement`, `pages_manage_posts`
+**Configurar:** Salvar `META_SYSTEM_TOKEN` no `.env`, mais um host de imagem público (ex.: imgbb) já que a Graph API exige URL, não upload direto — a variação "System User" de `configurar-app-meta` cobre a diferença desse fluxo pro de página única
 **Quando usar:** Franquia ou rede que administra centralmente as páginas de todas as unidades — base da implementação multi-unidade de `agendar-publicacao`. **Atenção:** por padrão o Meta libera essas permissões em modo Standard Access, que só funciona de forma estável pra um número pequeno de contas de teste — publicar de verdade em muitas páginas exige passar por App Review pedindo Advanced Access nessas permissões (não é imediato, confirmar status em App Dashboard > App Review antes de tentar publicar em escala). Sempre confirmar o ID de conta do Instagram consultando a Graph API ao vivo antes de publicar — cadastro local pode estar desatualizado.
 
 ---
