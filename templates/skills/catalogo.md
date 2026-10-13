@@ -86,6 +86,17 @@ Nativa do Claude Code. Útil quando a empresa cliente tem produto digital própr
 
 ---
 
+## Editar arte, vídeo e áudio por comando (opt-in — só se relevante pro cliente)
+
+### Suíte Craft (ArtCraft)
+**O que faz:** Editores open source (foto, vetor, layout, vídeo, motion, áudio, PDF) que o Claude opera por CLI/MCP, sem abrir janela — PhotoCraft, DesignCraft, FilmCraft, VectorCraft, EffectCraft, SoundCraft, LightCraft, PDFCraft. Detalhes, versões e o que foi realmente testado em `templates/ferramentas/catalogo.md`.
+**Bom pra:** Cliente que produz peça visual ou vídeo com frequência e precisa de edição em lote, layout multipágina, vídeo ou áudio — o que `carrossel` (HTML) e `criar-arte-redes` (Canva) não cobrem. Alternativa ao Video-Use pra edição de vídeo: não depende de Python, ffmpeg nem chave da ElevenLabs, mas edita por comando exato (não transcreve a fala).
+**Como instalar:** template `configurar-craft` (`/mapear` oferece) — baixa só os apps que o cliente vai usar, confere o checksum e registra o MCP restrito à pasta do cliente.
+**Nota:** Projeto **alpha** — alinhar expectativa antes de instalar e não prometer substituição de Photoshop/Premiere em produção crítica. Dois apps (FilmCraft, DesignCraft) não permitem limitar a pasta que o MCP acessa; ver aviso de segurança no catálogo de ferramentas.
+**Fonte:** Terceiros (storytold/ArtCraft, Apache-2.0)
+
+---
+
 ## Controlar um navegador de verdade (alto risco — avaliar caso a caso)
 
 ### Browser Harness

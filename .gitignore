@@ -16,6 +16,9 @@ dados/*.xls
 dados/*.pdf
 !dados/README.md
 
+# Binários da Suíte Craft (60–130 MB cada) — baixados por /configurar-craft, nunca versionados
+ferramentas/craft/
+
 # Sistema
 .DS_Store
 Thumbs.db

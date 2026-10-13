@@ -151,6 +151,7 @@ Além do base-kit, `templates/skills/` guarda modelos prontos pra processos que 
 - **`publicar-site`** — publica HTML com link público (Cloudflare Pages)
 - **`dashboard-cliente`** — painel HTML persistente, atualizado por dados, não recriado do zero a cada vez
 - **`agendar-publicacao`** — fila de publicação agendada, com 3 arquiteturas de referência (local, cloud, multi-unidade/franquia) conforme o porte do cliente
+- **`configurar-craft`** — instala a Suíte Craft (editores open source de foto, vetor, layout, vídeo e áudio) e conecta ao Claude por MCP, restrito à pasta do cliente. Projeto alpha: oferecido só pra quem produz arte/vídeo com frequência
 
 Cada template chega **sem** nome de empresa, cor ou credencial real — é adaptado ao cliente no momento em que o `/mapear` instala.
 

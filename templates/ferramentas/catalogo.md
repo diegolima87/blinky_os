@@ -54,6 +54,54 @@ curl -L "https://image.pollinations.ai/prompt/<prompt-url-encoded>?width=1080&he
 
 ---
 
+## Editar e finalizar arte, vídeo e áudio (Suíte Craft)
+
+> A seção acima **cria matéria-prima** (imagem por IA). A Suíte Craft **edita, compõe e exporta** o entregável final — com o Claude operando o app por comando, sem abrir janela. Pra configurar do zero, usar o template `configurar-craft`. Verificado na prática em 13/10/2026 (versões na tabela).
+
+### Suíte Craft (ArtCraft)
+**O que faz:** Família de editores open source (Apache-2.0, escritos em Rust) que reimplementam o papel de Photoshop, Lightroom, Illustrator, InDesign, Premiere, After Effects e Pro Tools. Cada app traz um **CLI headless** e um **servidor MCP** (`<app>-cli mcp`) que expõem os mesmos comandos do app (centenas por app) — o Claude monta uma arte, diagrama páginas ou corta vídeo exatamente como uma pessoa faria na interface.
+**Precisa de conta:** Não. Grátis, roda offline, sem telemetria (segundo os READMEs). Fonte oficial: `github.com/storytold/<app>` — conferir o nome da organização antes de baixar.
+**Como instalar:** baixar o `<app>-<versão>-windows-x64-portable.zip` do último release e conferir o SHA-256 contra o `SHA256SUMS.txt` do mesmo release. **O `<app>-cli.exe` vem dentro desse zip** (junto com o app com janela) — o CLI avulso só é publicado separado pra macOS. Passo a passo completo em `configurar-craft`.
+
+| App | Papel equivalente | Usar pra | Estado verificado |
+|---|---|---|---|
+| **PhotoCraft** 0.8.2 | Photoshop | Arte com camadas, tratamento de foto, edição em lote (`batch`) | Rodado: arte 1080×1350 criada do zero e exportada em PNG |
+| **DesignCraft** 0.7.1 | InDesign | Layout multipágina, carrossel, material editorial, export PNG/PDF | Rodado: renderizou 4 páginas em PNG |
+| **FilmCraft** 0.7.2 | Premiere | Edição de vídeo: corte, cor, áudio, legenda, export | CLI rodado, ~700 comandos listados (edição de vídeo ainda não exercitada) |
+| **VectorCraft** 0.10.0 | Illustrator | Logo, ícone, ilustração vetorial, export PDF/SVG | CLI e MCP presentes (arte ainda não exercitada) |
+| **LightCraft** 0.7.1 | Lightroom | Revelar fotos/RAW em lote | Só README |
+| **EffectCraft** 0.9.2 | After Effects | Motion graphics, animação, export MP4/Lottie | Só README |
+| **SoundCraft** 0.6.1 | Pro Tools | Edição e mixagem de áudio, locução | Só README |
+| **PDFCraft** 0.7.1 | Acrobat | Juntar, dividir, editar e extrair texto de PDF | Só README |
+
+DeckCraft (PowerPoint), WordCraft (Word), GridCraft (Excel) e CADCraft (AutoCAD) existem na mesma família, mas não foram avaliados aqui — pra documento/planilha/apresentação seguir com as skills nativas (`/pptx`, `/docx`, `/xlsx`).
+
+**Como o Claude usa (CLI — comandos já testados):**
+```bash
+# Arte 1080x1350 (feed Instagram) do zero → PNG
+photocraft-cli run --new '{"width":1080,"height":1350,"mode":"rgb","depth":8,"background":"white"}' \
+  --cmd layer.newFillLayer.solidColor --params '{"color":"#6D28D9"}' --out arte.png
+
+# Renderizar todas as páginas de um documento em PNG (exemplo embutido)
+designcraft-cli run --sample --all-pages saida/
+
+# Descobrir tudo que o app sabe fazer (filtrável) — fonte de verdade dos nomes de comando
+photocraft-cli commands --filter text
+```
+Exportar pra PNG **achata as camadas** (o CLI avisa) — salvar também o arquivo editável (`.pcraft`) pra poder reeditar depois.
+
+**Quando usar:** Cliente que produz peça visual ou vídeo com frequência e precisa de algo que HTML (`carrossel`) ou Canva (`criar-arte-redes`) não resolvem — edição em lote de fotos, layout multipágina, vídeo, áudio — ou que não quer pagar assinatura de suíte de edição. Combina com `gerar-imagem` (cria o insumo) e `publicar-redes` / `agendar-publicacao` (publica o resultado).
+**Quando NÃO usar:** Post estático simples (Canva ou `carrossel` entregam mais rápido e com menos setup); cliente que precisa de produção profissional crítica hoje — **o projeto ainda é alpha** (PhotoCraft e FilmCraft se declaram "early alpha"/"alpha"; o próprio README do PhotoCraft diz que ainda não substitui o Photoshop no uso profissional diário). Avisar o cliente disso antes de instalar. Cada app pesa 60–130 MB.
+**Segurança do MCP — ler antes de registrar:** por padrão o MCP pode agir com as permissões do usuário no disco. **PhotoCraft e VectorCraft** aceitam `--automation-read-root` / `--automation-write-root` pra limitar o acesso do Claude à pasta do projeto — **sempre usar** (testado no PhotoCraft: arquivo fora da pasta é rejeitado). **FilmCraft e DesignCraft não têm esse limite** (documentado: "o servidor lê e escreve onde o usuário puder"); EffectCraft e LightCraft não documentam. Nesses casos, preferir chamar o CLI pelo terminal (cada chamada passa pela permissão normal do Claude Code) e não abrir arquivo de origem desconhecida. Dado confidencial do cliente (RH, financeiro, contrato) fica fora da pasta onde o MCP opera.
+
+### ArtCraft (IDE de IA generativa)
+**O que faz:** App desktop (Windows/macOS) pra criar imagem e vídeo por IA com controle de composição — monta cena em 3D, posiciona personagem e câmera, compõe em 2D e só então gera, usando vários modelos (Nano Banana, GPT Image, FLUX, Seedream, Seedance, Kling, Veo, Suno, entre outros — o README lista 62 modelos).
+**Precisa de conta:** Provavelmente sim pra gerar (a geração roda em modelos de terceiros, via ArtCraft ou pela conta do próprio provedor) — **conferir custo e créditos no app antes de recomendar**; não validado aqui.
+**Quando usar:** Time criativo que quer controle visual fino sobre a geração e vai operar o app manualmente. O README **não documenta CLI nem MCP**, então o Claude não opera o ArtCraft — pra geração automatizada continuar com Pollinations/Magnific (seção acima).
+**Fonte:** `github.com/storytold/artcraft` · download em getartcraft.com
+
+---
+
 ## Publicar em redes sociais
 
 > Pra criar o App do Meta e extrair essas credenciais do zero, sem pressupor que o cliente já conhece a interface do Meta, usar o template `configurar-app-meta` — guia passo a passo até chegar exatamente nas variáveis que as duas entradas abaixo esperam.
