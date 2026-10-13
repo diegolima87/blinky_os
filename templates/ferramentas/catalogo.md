@@ -67,7 +67,7 @@ curl -L "https://image.pollinations.ai/prompt/<prompt-url-encoded>?width=1080&he
 |---|---|---|---|
 | **PhotoCraft** 0.8.2 | Photoshop | Arte com camadas, tratamento de foto, edição em lote (`batch`) | Rodado: arte 1080×1350 criada do zero e exportada em PNG |
 | **DesignCraft** 0.7.1 | InDesign | Layout multipágina, carrossel, material editorial, export PNG/PDF | Rodado: renderizou 4 páginas em PNG |
-| **FilmCraft** 0.7.2 | Premiere | Edição de vídeo: corte, cor, áudio, legenda, export | CLI rodado, ~700 comandos listados (edição de vídeo ainda não exercitada) |
+| **FilmCraft** 0.7.2 | Premiere | Edição de vídeo: corte, cor, áudio, legenda, export | Rodado: exportou o projeto demo em MP4 e montou um vídeo de 20 s a partir de 4 páginas do DesignCraft (conferido com `ffprobe` e por frames) |
 | **VectorCraft** 0.10.0 | Illustrator | Logo, ícone, ilustração vetorial, export PDF/SVG | CLI e MCP presentes (arte ainda não exercitada) |
 | **LightCraft** 0.7.1 | Lightroom | Revelar fotos/RAW em lote | Só README |
 | **EffectCraft** 0.9.2 | After Effects | Motion graphics, animação, export MP4/Lottie | Só README |
@@ -87,8 +87,18 @@ designcraft-cli run --sample --all-pages saida/
 
 # Descobrir tudo que o app sabe fazer (filtrável) — fonte de verdade dos nomes de comando
 photocraft-cli commands --filter text
+
+# Peças → vídeo: o DesignCraft gera as páginas, o FilmCraft monta a sequência e exporta
+designcraft-cli run --sample --all-pages paginas/
+filmcraft-cli --save-as projeto.fcproj run - <<'EOF'
+{"id":"file.import","params":{"paths":["<caminho-absoluto>/paginas/page-001.png","<caminho-absoluto>/paginas/page-002.png"]}}
+{"id":"file.newSequenceFromClip","params":{"items":[1,2]}}
+EOF
+filmcraft-cli --project projeto.fcproj export saida.mp4 --format h264
 ```
 Exportar pra PNG **achata as camadas** (o CLI avisa) — salvar também o arquivo editável (`.pcraft`) pra poder reeditar depois.
+
+No vídeo, cada chamada do `filmcraft-cli` é uma sessão separada: o estado passa de uma pra outra pelo arquivo `.fcproj` (`--save-as` / `--project`). O `file.import` devolve os ids (`items`) que o `file.newSequenceFromClip` precisa — sem eles o comando falha com "select a clip in the Project panel". Imagem parada entra com 5 s e a sequência sai com o tamanho das imagens (testado: 4 páginas de 630×810 viraram um MP4 de 20 s em 6 s de render). O `export` aceita `--scale`, `--quality`, `--range` e `--no-audio` (`filmcraft-cli --help`). Tamanho de Reels/Stories (1080×1920) e duração por slide ainda não foram exercitados — os comandos `file.newSequence` e `graphics.resetDuration` existem pra isso.
 
 **Quando usar:** Cliente que produz peça visual ou vídeo com frequência e precisa de algo que HTML (`carrossel`) ou Canva (`criar-arte-redes`) não resolvem — edição em lote de fotos, layout multipágina, vídeo, áudio — ou que não quer pagar assinatura de suíte de edição. Combina com `gerar-imagem` (cria o insumo) e `publicar-redes` / `agendar-publicacao` (publica o resultado).
 **Quando NÃO usar:** Post estático simples (Canva ou `carrossel` entregam mais rápido e com menos setup); cliente que precisa de produção profissional crítica hoje — **o projeto ainda é alpha** (PhotoCraft e FilmCraft se declaram "early alpha"/"alpha"; o próprio README do PhotoCraft diz que ainda não substitui o Photoshop no uso profissional diário). Avisar o cliente disso antes de instalar. Cada app pesa 60–130 MB.

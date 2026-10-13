@@ -116,13 +116,17 @@ ferramentas/craft/photocraft/photocraft-cli.exe run \
 # DesignCraft — renderiza as páginas do documento de exemplo em PNG
 ferramentas/craft/designcraft/designcraft-cli.exe run --sample --all-pages ferramentas/craft/teste/
 
+# FilmCraft — exporta o projeto de demonstração em MP4 (leva ~30 s) e confere o arquivo
+ferramentas/craft/filmcraft/filmcraft-cli.exe --demo export ferramentas/craft/teste.mp4 --format h264 --scale 0.5
+ferramentas/craft/filmcraft/filmcraft-cli.exe probe ferramentas/craft/teste.mp4
+
 # Qualquer app — lista os comandos que ele aceita (é daqui que o Claude descobre o que dá pra fazer)
 ferramentas/craft/<app>/<app>-cli.exe commands
 ```
 
 O PhotoCraft avisa `layer(s) flattened` ao exportar PNG — esperado: PNG não guarda camadas. Pra reeditar depois, salvar também o arquivo nativo (`.pcraft`).
 
-Depois de olhar, apagar os arquivos de teste (`ferramentas/craft/teste-arte.png` e `ferramentas/craft/teste/`). Se der erro de execução, parar e mostrar ao usuário o erro exato — não tentar contornar.
+Depois de olhar, apagar os arquivos de teste (`ferramentas/craft/teste-arte.png`, `ferramentas/craft/teste/` e `ferramentas/craft/teste.mp4`). Se der erro de execução, parar e mostrar ao usuário o erro exato — não tentar contornar.
 
 ## Passo 5 — Conectar ao Claude (MCP)
 
