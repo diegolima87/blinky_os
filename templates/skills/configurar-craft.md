@@ -126,7 +126,27 @@ Depois de olhar, apagar os arquivos de teste (`ferramentas/craft/teste-arte.png`
 
 ## Passo 5 — Conectar ao Claude (MCP)
 
-Registrar com escopo **local** (o padrão do `claude mcp add`): o caminho do `.exe` é específico da máquina e não deve ir pro repositório.
+O caminho do `.exe` é específico da máquina, então o registro **não pode ir pro repositório do cliente**. Há duas formas, conforme o ambiente:
+
+- **Escopo local** (`claude mcp add`, o padrão): fica na config pessoal do usuário (`~/.claude.json`). Serve em terminal no macOS/Linux. **No Windows com VS Code há duas armadilhas** (as duas aconteceram na primeira instalação): (1) o escopo local vale pela pasta onde o comando roda — um terminal aberto em `C:\Users\<nome>` registra pra pasta pessoal e não pro projeto; a última linha da saída diz `[project: …]`, conferir; (2) o Claude Code guarda cada projeto pela grafia exata do caminho, e `B:/…` (terminal) e `b:/…` (extensão do VS Code, letra minúscula) viram projetos diferentes — na prática o mesmo projeto aparece duplicado na `~/.claude.json` —, então um registro feito num terminal pode não aparecer na sessão da extensão.
+- **Escopo de projeto** (`.mcp.json` na raiz do workspace): vale pra qualquer grafia do caminho, e a primeira sessão pede a aprovação do usuário. É a saída certa no Windows + VS Code. Como o arquivo leva o caminho absoluto da máquina, **adicionar `.mcp.json` ao `.git/info/exclude`** (exclusão só local) — o `/syncar` faz `git add` de tudo e publicaria o caminho no GitHub do cliente. Exemplo (PhotoCraft):
+
+```json
+{
+  "mcpServers": {
+    "photocraft": {
+      "type": "stdio",
+      "command": "<caminho-absoluto>/ferramentas/craft/photocraft/photocraft-cli.exe",
+      "args": ["mcp", "--automation-read-root", "<caminho-absoluto>/conteudo", "--automation-write-root", "<caminho-absoluto>/conteudo"],
+      "env": {}
+    }
+  }
+}
+```
+
+`claude mcp get photocraft` mostra `Scope: Project config` e `Status: Pending approval` até o usuário aprovar ao reabrir a sessão. A restrição de pasta aceita letra do drive em maiúscula ou minúscula e também caminho relativo à pasta permitida (testado).
+
+Os comandos abaixo são a forma `claude mcp add` (escopo local); o conteúdo do `.mcp.json` é o mesmo comando e os mesmos argumentos.
 
 **PhotoCraft e VectorCraft — com restrição de pasta (sempre usar):**
 
@@ -143,11 +163,11 @@ A pasta de trabalho (`conteudo/` ou outra, combinar com o usuário) é a **únic
 claude mcp add filmcraft -- "<caminho-absoluto>/ferramentas/craft/filmcraft/filmcraft-cli.exe" mcp
 ```
 
-Esses dois **não aceitam** `--automation-read-root`: o servidor lê e escreve onde o usuário puder. Avisar o usuário e oferecer o caminho mais seguro — **pular o MCP e usar só o CLI pelo terminal** (`filmcraft-cli.exe run …`), onde cada chamada passa pela permissão normal do Claude Code. Registrar o MCP sem restrição só com o "sim" explícito do usuário, e **nunca** abrir arquivo de origem desconhecida (vídeo, projeto ou PDF baixado de terceiros) por esse caminho. EffectCraft, LightCraft e SoundCraft: conferir `<app>-cli.exe --help` pra ver se `mcp` aceita `--automation-*-root`; se não aceitar, mesma regra.
+Esses dois **não aceitam** `--automation-read-root`: o servidor lê e escreve onde o usuário puder. Avisar o usuário e oferecer o caminho mais seguro — **pular o MCP e usar só o CLI pelo terminal** (`filmcraft-cli.exe run …`), onde cada chamada passa pela permissão normal do Claude Code. Registrar o MCP sem restrição só com o "sim" explícito do usuário, e **nunca** abrir arquivo de origem desconhecida (vídeo, projeto ou PDF baixado de terceiros) por esse caminho. EffectCraft, LightCraft e SoundCraft: conferir `<app>-cli.exe --help` pra ver se `mcp` aceita `--automation-*-root`; se não aceitar, mesma regra. Se o VS Code ou o terminal estiver aberto como **Administrador** (aconteceu na primeira instalação), tudo que o Claude inicia — inclusive o MCP — roda elevado: mais um motivo pra manter a restrição de pasta e deixar FilmCraft/DesignCraft só no CLI.
 
-**Se o Claude Code bloquear o `claude mcp add`:** aconteceu na primeira instalação — o classificador de segurança trata o registro de um executável baixado que passa a iniciar sozinho a cada sessão como "persistência não autorizada". Não contornar (nada de editar `~/.claude.json` ou criar `.mcp.json` na mão pra driblar o bloqueio). Mostrar o comando pronto ao usuário e pedir pra ele rodar no próprio prompt com `!` na frente (`! claude mcp add …`), ou liberar uma regra de permissão `Bash(claude mcp add:*)` nas configurações, se ele quiser que o Claude registre sozinho. Enquanto isso o CLI pelo terminal já faz o mesmo trabalho — o MCP é conveniência, não pré-requisito.
+**Se o Claude Code bloquear o `claude mcp add`:** aconteceu na primeira instalação — o classificador de segurança trata o registro de um executável baixado que passa a iniciar sozinho a cada sessão como "persistência não autorizada". **Parar e deixar o usuário decidir:** mostrar o comando pronto (dizendo em qual pasta rodar) ou sugerir a regra de permissão `Bash(claude mcp add:*)`. Só depois que o usuário autorizar o registro explicitamente — rodando o comando ele mesmo ou pedindo pra você fazer — é legítimo usar o `.mcp.json` quando o escopo local não alcança a sessão; antes disso, nunca criar `.mcp.json` nem editar `~/.claude.json` pra contornar o bloqueio. Se o usuário registrou na pasta errada, desfazer só o que ele criou (`claude mcp remove <app> --scope local`, rodado na mesma pasta em que ele registrou) e conferir depois. Enquanto isso o CLI pelo terminal já faz o mesmo trabalho — o MCP é conveniência, não pré-requisito.
 
-Depois de registrar: **reiniciar a sessão** do Claude Code e conferir com `/mcp` que o app aparece conectado. Antes de registrar, dá pra checar que o servidor sobe: `<app>-cli.exe mcp` responde ao handshake MCP (testado: PhotoCraft e DesignCraft listam 25 ferramentas cada).
+Depois de registrar: **reiniciar a sessão** do Claude Code (no escopo de projeto, aprovar o servidor quando ele perguntar) e conferir com `/mcp` que o app aparece conectado. Antes de registrar, dá pra checar que o servidor sobe: `<app>-cli.exe mcp` responde ao handshake MCP (testado: PhotoCraft e DesignCraft listam 25 ferramentas cada).
 
 **Testar a restrição na prática (PhotoCraft/VectorCraft):** pedir ao Claude pra abrir, pelo MCP, um arquivo que está *fora* da pasta de trabalho. Tem que ser recusado (testado no PhotoCraft 0.8.2, pelo próprio MCP: com os roots, o arquivo de dentro abre e o de fora volta `absolute paths must be inside the automation root`; no VectorCraft só confirmei que as flags existem). Se abrir, a restrição não está valendo — remover o MCP (`claude mcp remove <app>`) e voltar pro CLI.
 
